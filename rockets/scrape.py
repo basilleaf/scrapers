@@ -40,7 +40,7 @@ for page_url in all_pages:
 	except urllib2.HTTPError:
 	    raise Exception("Http 404 " + page_url)
 	
-	try:
+	try: 
 		data = collections.OrderedDict() # but ScraperWiki not liking..
 		soup = BeautifulStoneSoup(page) 
 		data['credit'] = ''.join(str(soup.findAll('ul')[1]).splitlines())
@@ -55,7 +55,7 @@ for page_url in all_pages:
 		# update scraperwiki
 		scraperwiki.sqlite.save(unique_keys=['GRIN_id'], data=data)
 
-	except:
+	except: # it's sunday night and I'm lazy!
 		pass
 
 
