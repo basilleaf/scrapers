@@ -51,7 +51,8 @@ for page_url in all_pages:
 		data['Small'] = soup.find('a',text='Small').parent['href']
 		data['Medium'] = soup.find('a',text='Medium').parent['href']
 		data['Large'] = soup.find('a',text='Large').parent['href']
-
+		data['page_url'] = page_url
+		
 		# update scraperwiki
 		scraperwiki.sqlite.save(unique_keys=['GRIN_id'], data=data)
 
