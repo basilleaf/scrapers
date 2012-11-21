@@ -7,7 +7,7 @@ import re
 import collections
 
 base_url = 'http://grin.hq.nasa.gov' # base url of the website
-url = 'http://grin.hq.nasa.gov/BROWSE/rocket_launch.html' # index page with all the things
+index_url = 'http://grin.hq.nasa.gov/BROWSE/rocket_launch.html' # index page with all the things
 # url = 'http://grin.hq.nasa.gov/BROWSE/rocket_launch_7.html' # just one page of index
 
 # fields and patterns to search for in the detail pages (GRIN has it's own special tags around data)
@@ -19,12 +19,12 @@ all_patterns = {
 }
 
 try:
-    page = urllib2.urlopen(url).read()   
+    index_page = urllib2.urlopen(index_url).read()   
 except urllib2.HTTPError:
-    raise Exception("Http 404 - invalid start url: " + url)
+    raise Exception("Http 404 - invalid start url: " + index_url)
 
-soup = BeautifulStoneSoup(page) 
-all_links = soup.findAll('a')   
+index_soup = BeautifulStoneSoup(index_page) 
+all_links = index_soup.findAll('a')   
 
 
 # get all the detail pages:
@@ -34,14 +34,14 @@ for link in all_links:
 		all_pages.append(base_url + link['href'])
 
 # scrape data from each detail page
-for page_url in all_pages:
+for page_url in all_pages[0:1]:
 	try:
 	    page = urllib2.urlopen(page_url).read()   
 	except urllib2.HTTPError:
 	    raise Exception("Http 404 " + page_url)
 	
 	try: 
-		data = collections.OrderedDict() # but ScraperWiki not liking..
+		data = {} # collections.OrderedDict() # but ScraperWiki not liking..
 		soup = BeautifulStoneSoup(page) 
 		data['credit'] = ''.join(str(soup.findAll('ul')[1]).splitlines())
 		for field, pattern in all_patterns.items():
