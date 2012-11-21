@@ -4,6 +4,8 @@ import exceptions, urllib2, re
 from BeautifulSoup import BeautifulStoneSoup
 import sys
 import re
+import datetime
+import time
 import collections
 
 base_url = 'http://grin.hq.nasa.gov' # base url of the website
@@ -16,6 +18,7 @@ all_patterns = {
 	'title' : '<!-- ONE-LINE-DESCRIPTION-BEGIN -->(.*?)<!-- ONE-LINE-DESCRIPTION-END -->',
 	'description' : '<!-- DESCRIPTION-BEGIN -->(.*?)<!-- DESCRIPTION-END -->',
 	'keywords' : '<!-- KEYWORD-BEGIN -->(.*?)<!-- KEYWORD-END -->',
+	'date' : '<!-- DATE-BEGIN --(.*?)-- DATE-END -->',
 }
 
 try:
@@ -53,6 +56,11 @@ for page_url in all_pages:
 		data['Large'] = soup.find('a',text='Large').parent['href']
 		data['page_url'] = page_url
 		
+		# handle the date field
+		t = time.strptime(data['date'], "%Y%m%d") 
+		data['date'] = time.strftime('%B %d, %Y', t)
+
+		print data
 		# update scraperwiki
 		scraperwiki.sqlite.save(unique_keys=['GRIN_id'], data=data)
 
