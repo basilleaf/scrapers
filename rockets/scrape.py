@@ -57,8 +57,9 @@ for page_url in all_pages:
 		data['page_url'] = page_url
 		
 		# handle the date field
-		t = time.strptime(data['date'], "%Y%m%d") 
-		data['date'] = time.strftime('%B %d, %Y', t)
+		if data['date']:
+			t = time.strptime(data['date'], "%Y%m%d") 
+			data['date'] = time.strftime('%B %d, %Y', t)
 
 		print data
 		# update scraperwiki
