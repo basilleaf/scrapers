@@ -34,7 +34,7 @@ for link in all_links:
 		all_pages.append(base_url + link['href'])
 
 # scrape data from each detail page
-for page_url in all_pages[0:1]:
+for page_url in all_pages:
 	try:
 	    page = urllib2.urlopen(page_url).read()   
 	except urllib2.HTTPError:
